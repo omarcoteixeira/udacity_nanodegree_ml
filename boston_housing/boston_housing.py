@@ -22,7 +22,7 @@
 # 
 # Run the code cell below to load the Boston housing dataset, along with a few of the necessary Python libraries required for this project. You will know the dataset loaded successfully if the size of the dataset is reported.
 
-# In[5]:
+# In[3]:
 
 # Import libraries necessary for this project
 import numpy as np
@@ -56,7 +56,7 @@ print "Boston housing dataset has {} data points with {} variables each.".format
 # - Calculate the minimum, maximum, mean, median, and standard deviation of `'MEDV'`, which is stored in `prices`.
 #   - Store each calculation in their respective variable.
 
-# In[7]:
+# In[4]:
 
 # TODO: Minimum price of the data
 minimum_price = np.min(prices)
@@ -110,7 +110,7 @@ print "Standard deviation of prices: ${:,.2f}".format(std_price)
 # - Use `r2_score` from `sklearn.metrics` to perform a performance calculation between `y_true` and `y_predict`.
 # - Assign the performance score to the `score` variable.
 
-# In[9]:
+# In[5]:
 
 # TODO: Import 'r2_score'
 from sklearn.metrics import r2_score
@@ -140,7 +140,7 @@ def performance_metric(y_true, y_predict):
 # 
 # Run the code cell below to use the `performance_metric` function and calculate this model's coefficient of determination.
 
-# In[10]:
+# In[6]:
 
 # Calculate the performance of this model
 score = performance_metric([3, -0.5, 2, 7, 4.2], [2.5, 0.0, 2.1, 7.8, 5.3])
@@ -158,7 +158,7 @@ print "Model has a coefficient of determination, R^2, of {:.3f}.".format(score)
 #   - Set the `random_state` for `train_test_split` to a value of your choice. This ensures results are consistent.
 # - Assign the train and testing splits to `X_train`, `X_test`, `y_train`, and `y_test`.
 
-# In[14]:
+# In[7]:
 
 # TODO: Import 'train_test_split'
 from sklearn.cross_validation import train_test_split
@@ -174,12 +174,9 @@ print "Training and testing split was successful."
 # *What is the benefit to splitting a dataset into some ratio of training and testing subsets for a learning algorithm?*  
 # **Hint:** What could go wrong with not having a way to test your model?
 
-# In[ ]:
-
-
-
-
-# **Answer: ** The benefit is to ensure (or almost) that your algorithm works the way you expect it to. As example, in programming test are necessary to ensure the quality of your code and whether it is working properly.
+# **Answer: ** The benefit is to ensure that your algorithm works the way you expect and it's doing good predictions.
+# Without split the data we have a chance of the model do not do good predictions. 
+# Some benefits are to give us an estimated performance for each independent subset and to check that the model is on overfitting. 
 # 
 # "A test set is a set of data used to assess the strength and utility of a predictive relationship - Source: https://en.wikipedia.org/wiki/Test_set"
 
@@ -193,7 +190,7 @@ print "Training and testing split was successful."
 # 
 # Run the code cell below and use these graphs to answer the following question.
 
-# In[15]:
+# In[8]:
 
 # Produce learning curves for varying training set sizes and maximum depths
 vs.ModelLearning(features, prices)
@@ -203,16 +200,17 @@ vs.ModelLearning(features, prices)
 # *Choose one of the graphs above and state the maximum depth for the model. What happens to the score of the training curve as more training points are added? What about the testing curve? Would having more training points benefit the model?*  
 # **Hint:** Are the learning curves converging to particular scores?
 
-# **Answer: ** I choose the 4th graph and the max depth is equal to 10. When more training points are added, more the training curve becomes stable and more close to 1, and also the certainty of the learning curve becomes more stable too. 
-# The testing curve has almost the same behavior, tends to follow a pattern and certainty begins to vary between ups and downs.
-# In this case, I guess that more training points would not make so much difference.
+# **Answer: ** 
+# I choose the 3th graph and the max depth is equal to 6. Looking the training curve, when increase the training points the performance decrease until 300 points and after that it turns more stable, adding more training points would not make so much difference. 
+# The testing curve has a differente behavior, the performance increase when more training point are added, there is fast increase at the firsts 50 points, at 50 to 330 the performance points has little difference but after that adding more training point would not make so much difference.
+# The training and testing curves assumes the same behavoir at 0.8.
 
 # ### Complexity Curves
 # The following code cell produces a graph for a decision tree model that has been trained and validated on the training data using different maximum depths. The graph produces two complexity curves — one for training and one for validation. Similar to the **learning curves**, the shaded regions of both the complexity curves denote the uncertainty in those curves, and the model is scored on both the training and validation sets using the `performance_metric` function.  
 # 
 # Run the code cell below and use this graph to answer the following two questions.
 
-# In[16]:
+# In[9]:
 
 vs.ModelComplexity(X_train, y_train)
 
@@ -221,7 +219,8 @@ vs.ModelComplexity(X_train, y_train)
 # *When the model is trained with a maximum depth of 1, does the model suffer from high bias or from high variance? How about when the model is trained with a maximum depth of 10? What visual cues in the graph justify your conclusions?*  
 # **Hint:** How do you know when a model is suffering from high bias or high variance?
 
-# **Answer: ** When the model is trained with a maximum depth of 1, it has high bias because the training and validation score result values are both low, indicating that the model needs de mo training to fit the result correctly and could ignore some data. And when the depth is 10 the model suffer from high bias and high variance because the model has a high training score value and a low validation score, overfiting the data.
+# **Answer: ** When the model is trained with a maximum depth of 1, it has high bias because the training and validation score result values are both low, indicating that the model needs the more training to fit the result correctly and could ignore some data. And when the depth is 10 the model suffer from high variance. To reduce the high variance we need to simplify the model if only important data.
+# The Trade-off is tension between the error introduced by the bias and the variance.
 
 # ### Question 6 - Best-Guess Optimal Model
 # *Which maximum depth do you think results in a model that best generalizes to unseen data? What intuition lead you to this answer?*
@@ -236,13 +235,19 @@ vs.ModelComplexity(X_train, y_train)
 # ### Question 7 - Grid Search
 # *What is the grid search technique and how it can be applied to optimize a learning algorithm?*
 
-# **Answer: ** It is a way to perform/tune hyperparameter optimization and could be applied with cross-validating to determinate which tune gives the best performance of a model.
+# **Answer: ** 
+# It is a way to perform/tune hyperparameter optimization and could be applied with cross-validating to determinate which tune gives the best performance of a model. Search Grid exhaustively considers all the parameter combinations and returns the optimal model after fitting the data.
+# 
+# "A grid search algorithm must be guided by some performance metric, typically measured by cross-validation on the training set or evaluation on a held-out validation set." - Source: https://en.wikipedia.org/wiki/Hyperparameter_optimization#Grid_search
 
 # ### Question 8 - Cross-Validation
 # *What is the k-fold cross-validation training technique? What benefit does this technique provide for grid search when optimizing a model?*  
 # **Hint:** Much like the reasoning behind having a testing set, what could go wrong with using grid search without a cross-validated set?
 
-# **Answer: ** It is a method used in cross-validation to divide the data into `k` subsets of the same size and after that, a subset of that data is used for testing and `k-1` is used to tune the model. The advantage of this model is that all observations are used for both training and validation, and each observation is used for validation exactly once.
+# **Answer: ** 
+# It is a method used in cross-validation to divide the data into `k` subsets of the same size and after that, a subset of that data is used for testing and `k-1` is used to tune the model. The average error in all all trials is computed.
+# The grid search do the parameter optimization and use cross validation, ensuring that model is not overfitting.
+# The advantage of this model is that all observations are used for both training and validation, and each observation is used for validation exactly once.
 
 # ### Implementation: Fitting a Model
 # Your final implementation requires that you bring everything together and train a model using the **decision tree algorithm**. To ensure that you are producing an optimized model, you will train the model using the grid search technique to optimize the `'max_depth'` parameter for the decision tree. The `'max_depth'` parameter can be thought of as how many questions the decision tree algorithm is allowed to ask about the data before making a prediction. Decision trees are part of a class of algorithms called *supervised learning algorithms*.
@@ -260,7 +265,7 @@ vs.ModelComplexity(X_train, y_train)
 #   - Pass the variables `'regressor'`, `'params'`, `'scoring_fnc'`, and `'cv_sets'` as parameters to the object. 
 #   - Assign the `GridSearchCV` object to the `'grid'` variable.
 
-# In[28]:
+# In[19]:
 
 # TODO: Import 'make_scorer', 'DecisionTreeRegressor', and 'GridSearchCV'
 from sklearn.tree import DecisionTreeRegressor
@@ -274,19 +279,19 @@ def fit_model(X, y):
     
     # Create cross-validation sets from the training data
     cv_sets = ShuffleSplit(X.shape[0], train_size = 10, test_size = 0.20, random_state = 0)
-    # I've to change n_inter to train_size to work. I saw at documentation.
+    # I've to change n_inter to train_size to work. I saw it at documentation.
 
     # TODO: Create a decision tree regressor object
     regressor = DecisionTreeRegressor(random_state=0)
 
     # TODO: Create a dictionary for the parameter 'max_depth' with a range from 1 to 10
-    params = {'max_depth': range(1,10)}
+    params = {'max_depth': range(1, 11)}
 
     # TODO: Transform 'performance_metric' into a scoring function using 'make_scorer' 
     scoring_fnc = make_scorer(performance_metric)
 
     # TODO: Create the grid search object
-    grid = GridSearchCV(regressor, params, scoring_fnc)
+    grid = GridSearchCV(regressor, params, scoring=scoring_fnc, cv=cv_sets)
 
     # Fit the grid search object to the data to compute the optimal model
     grid = grid.fit(X, y)
@@ -303,7 +308,7 @@ def fit_model(X, y):
 # 
 # Run the code block below to fit the decision tree regressor to the training data and produce an optimal model.
 
-# In[29]:
+# In[18]:
 
 # Fit the training data to the model using grid search
 reg = fit_model(X_train, y_train)
@@ -312,7 +317,8 @@ reg = fit_model(X_train, y_train)
 print "Parameter 'max_depth' is {} for the optimal model.".format(reg.get_params()['max_depth'])
 
 
-# **Answer: ** The maximum depth for the optimal model is 5. 
+# ### **Answer: ** 
+# The maximum depth for the optimal model is 3. In the question 6, I've chosen the max depth 4 because it has a higher validation score and when the max depth is increasing the model starts overfitting. But the max depth of 3 has a better bias / variance tradeoff.
 
 # ### Question 10 - Predicting Selling Prices
 # Imagine that you were a real estate agent in the Boston area looking to use this model to help price homes owned by your clients that they wish to sell. You have collected the following information from three of your clients:
@@ -327,7 +333,7 @@ print "Parameter 'max_depth' is {} for the optimal model.".format(reg.get_params
 # 
 # Run the code block below to have your optimized model make predictions for each client's home.
 
-# In[30]:
+# In[12]:
 
 # Produce a matrix for client data
 client_data = [[5, 17, 15], # Client 1
@@ -341,18 +347,18 @@ for i, price in enumerate(reg.predict(client_data)):
 
 # **Answer: **
 # 
-# - *Predicted selling price for Client 1's home: $411,000.00 
-#     This amout can be a considerable because the client seeks a house with medium values of rooms, poverty level and student-teacher ratio.
-# - *Predicted selling price for Client 2's home: $175,700.00 
-#     It's a fair price because the neighborhood poverty level is high.
-# - *Predicted selling price for Client 3's home: $875,700.00 
-#     This value is correct because the client is looking about a home in a high level neighborhood, with a good student-teacher ratio and a big home.
+# - *Predicted selling price for Client 1's home: $348,033.33*
+# This amout can be a considerable because the client seeks a house with medium values of rooms, poverty level and student-teacher ratio.
+# - *Predicted selling price for Client 2's home: $229,573.58*
+# It's a fair price because the neighborhood poverty level is high.
+# - *Predicted selling price for Client 3's home: $907,038.46*
+# This value is correct because the client is looking about a home in a high level neighborhood, with a good student-teacher ratio and a big home.
 # 
 
 # ### Sensitivity
 # An optimal model is not necessarily a robust model. Sometimes, a model is either too complex or too simple to sufficiently generalize to new data. Sometimes, a model could use a learning algorithm that is not appropriate for the structure of the data given. Other times, the data itself could be too noisy or contain too few samples to allow a model to adequately capture the target variable — i.e., the model is underfitted. Run the code cell below to run the `fit_model` function ten times with different training and testing sets to see how the prediction for a specific client changes with the data it's trained on.
 
-# In[31]:
+# In[20]:
 
 vs.PredictTrials(features, prices, fit_model, client_data)
 
@@ -375,6 +381,8 @@ vs.PredictTrials(features, prices, fit_model, client_data)
 #     Yes, It is robust for this purpose but it should have more features to increase the accuracy.
 # - *Would data collected in an urban city like Boston be applicable in a rural city?
 #     No, the values of the data and the features are different to both. The number of people in those cities for example would interfere in the result.
+#     
+# I think that this model should be user in a real-world, but it needs of some adjusts. How as I said, it needs to add more features to increase de accuracy, and it needs more updated data and data for each region (urban or rual) that will be applied.
 
 # > **Note**: Once you have completed all of the code implementations and successfully answered each question above, you may finalize your work by exporting the iPython Notebook as an HTML document. You can do this by using the menu above and navigating to  
 # **File -> Download as -> HTML (.html)**. Include the finished document along with this notebook as your submission.
