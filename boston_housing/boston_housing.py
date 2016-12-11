@@ -245,9 +245,13 @@ vs.ModelComplexity(X_train, y_train)
 # **Hint:** Much like the reasoning behind having a testing set, what could go wrong with using grid search without a cross-validated set?
 
 # **Answer: ** 
-# It is a method used in cross-validation to divide the data into `k` subsets of the same size and after that, a subset of that data is used for testing and `k-1` is used to tune the model. The average error in all all trials is computed.
-# The grid search do the parameter optimization and use cross validation, ensuring that model is not overfitting.
-# The advantage of this model is that all observations are used for both training and validation, and each observation is used for validation exactly once.
+# It is a method used in cross-validation to divide the data into `k` subsets of the same size and after that, a subset of that data is used for test and the orther `k-1` subsets are put together to form a training set (used to tune the model). This ensures that the test and training has the best learning and the better validation, and protect against overfitting the model.
+# 
+# The average performance metric score across all `k` trials is computed.
+# 
+# You can use k-fold cross-validation with Grid search. Grid search do the parameter optimization for each `k-1` training set and you then select the one that performed best.
+# 
+# The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set `k-1` times. 
 
 # ### Implementation: Fitting a Model
 # Your final implementation requires that you bring everything together and train a model using the **decision tree algorithm**. To ensure that you are producing an optimized model, you will train the model using the grid search technique to optimize the `'max_depth'` parameter for the decision tree. The `'max_depth'` parameter can be thought of as how many questions the decision tree algorithm is allowed to ask about the data before making a prediction. Decision trees are part of a class of algorithms called *supervised learning algorithms*.

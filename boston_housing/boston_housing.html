@@ -14651,9 +14651,10 @@ It is a way to perform/tune hyperparameter optimization and could be applied wit
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong> 
-It is a method used in cross-validation to divide the data into <code>k</code> subsets of the same size and after that, a subset of that data is used for testing and <code>k-1</code> is used to tune the model. The average error in all all trials is computed.
-The grid search do the parameter optimization and use cross validation, ensuring that model is not overfitting.
-The advantage of this model is that all observations are used for both training and validation, and each observation is used for validation exactly once.</p>
+It is a method used in cross-validation to divide the data into <code>k</code> subsets of the same size and after that, a subset of that data is used for test and the orther <code>k-1</code> subsets are put together to form a training set (used to tune the model). This ensures that the test and training has the best learning and the better validation, and protect against overfitting the model.</p>
+<p>The average performance metric score across all <code>k</code> trials is computed.</p>
+<p>You can use k-fold cross-validation with Grid search. Grid search do the parameter optimization for each <code>k-1</code> training set and you then select the one that performed best.</p>
+<p>The advantage of this method is that it matters less how the data gets divided. Every data point gets to be in a test set exactly once, and gets to be in a training set <code>k-1</code> times.</p>
 
 </div>
 </div>
